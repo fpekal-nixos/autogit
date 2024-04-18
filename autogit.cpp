@@ -126,7 +126,7 @@ static void commit_repository(repository& repo) {
 	log(DEBUG, std::string{ "Commiting repository: " } + repo.location);
 
 	//TODO Maybe prettify???
-	std::ignore = system((std::string{ "bash -c 'cd " } + repo.location + "; git commit -am \"commit $(date \"+%Y-%m-%d %H:%M:%S\")\" > /dev/null " + (repo.push ? "&& git push > /dev/null" : "") + "'").c_str());
+	std::ignore = system((std::string{ "cd " } + repo.location + "; git add . && git commit -m \"commit $(date \"+%Y-%m-%d %H:%M:%S\")\" > /dev/null " + (repo.push ? "&& git push > /dev/null" : "")).c_str());
 }
 
 static void minute_passed(std::vector<repository>& repositories) {
