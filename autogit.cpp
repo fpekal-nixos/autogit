@@ -78,6 +78,8 @@ struct repository {
 	std::string location;
 	int period; // in minutes
 	int left;   // in minutes
+	
+	bool push = false;
 };
 
 
@@ -95,12 +97,20 @@ static std::vector<repository> read_config() {
 		repository tmp;
 		file >> tmp.period;
 		file.ignore(1);
+		
+		std::string push;
+		file >> push;
+		if (push == "false") tmp.push = false;
+		else if (push == "true") tmp.push = true;
+		file.ignore(1);
+
 		tmp.left = tmp.period;
 		std::getline(file, tmp.location);
 
 		log(DEBUG, "Loaded repository:");
 		log(DEBUG, std::string{"Location: "} + tmp.location);
 		log(DEBUG, std::string{"Minutes: "} + std::to_string(tmp.period));
+		log(DEBUG, std::string{"Push: "} + push);
 		log(DEBUG, "");
 
 		out.push_back(tmp);
@@ -116,7 +126,7 @@ static void commit_repository(repository& repo) {
 	log(DEBUG, std::string{ "Commiting repository: " } + repo.location);
 
 	//TODO Maybe prettify???
-	system((std::string{ "bash -c 'cd " } + repo.location + "; git commit -am \"commit $(date \"+%Y-%m-%d %H:%M:%S\")\" > /dev/null'").c_str());
+	system((std::string{ "bash -c 'cd " } + repo.location + "; git commit -am \"commit $(date \"+%Y-%m-%d %H:%M:%S\")\" > /dev/null " + (repo.push ? "&& git push > /dev/null" : "") + "'").c_str());
 }
 
 static void minute_passed(std::vector<repository>& repositories) {
