@@ -16,11 +16,29 @@ struct {
 	log_level log = NORMAL;
 } env;
 
+static void log(log_level level, std::string msg) {
+	if (level > env.log) return;
+
+	if (level == ERROR) std::cout << "ERROR: ";
+	if (level == NORMAL);
+	if (level == DEBUG) std::cout << "DEBUG: ";
+
+	std::cout << msg << '\n';
+}
+
 static void parse_arguments(int argc, const char* argv[]) {
 	for (int i = 1; i < argc; ++i) {
 		std::string arg = argv[i];
 
-		if (arg == "--config" || arg == "-c") {
+		if (arg == "--help") {
+			log(NORMAL, "autogit automatically commits all changes in a working directory to the git repository and pushes them to remote.");
+			log(NORMAL, "");
+			log(NORMAL, "{--config,-c} config_file - set config file path - default /etc/autogit/autogit.conf");
+			log(NORMAL, "{--log,-l} {silent,normal,verbose} - set log level - default normal");
+
+			exit(0);
+		}
+		else if (arg == "--config" || arg == "-c") {
 			++i;
 			if (i >= argc) return;
 
@@ -49,15 +67,6 @@ static void parse_env_var() {
 	env.config_loc = config;
 }
 
-static void log(log_level level, std::string msg) {
-	if (level > env.log) return;
-
-	if (level == ERROR) std::cout << "ERROR: ";
-	if (level == NORMAL);
-	if (level == DEBUG) std::cout << "DEBUG: ";
-
-	std::cout << msg << '\n';
-}
 
 
 
