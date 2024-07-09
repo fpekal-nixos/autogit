@@ -1,2 +1,6 @@
-autogit:
-	g++ -O3 -o ${out}/bin/autogit autogit.cpp
+build:
+	g++ -O3 -o autogit autogit.cpp
+
+install:
+	mkdir -p $(out)/bin
+	cp autogit $(out)/bin
