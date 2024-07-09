@@ -41,7 +41,8 @@
 	let
 		cfg = config.services.autogit;
 
-		package = pkgs.callPackage ./autogit.nix {};
+		#package = pkgs.callPackage ./autogit.nix {};
+		package = pkgs.autogit;
 
 		prepareConfig = list:
 		let
