@@ -10,7 +10,7 @@
 		pkgs = nixpkgs.legacyPackages.${system};
 		version = "1.0.3";
 	in
-	rec {
+	{
 		packages.${system} = {
 			default =
 			pkgs.stdenv.mkDerivation {
@@ -24,7 +24,7 @@
 
 		overlays.default = final: prev:
 		{
-			autogit = pkgs.callPackage packages.${system}.default {};
+			autogit = pkgs.callPackage self.packages.${system}.default {};
 		};
 
 		nixosModules.default = import ./module.nix;
