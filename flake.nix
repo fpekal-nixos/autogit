@@ -26,5 +26,7 @@
 		{
 			autogit = pkgs.callPackage packages.${system}.default {};
 		};
+
+		nixosModules.default = import ./module.nix;
 	};
 }
