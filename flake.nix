@@ -24,7 +24,7 @@
 
 		overlays.default = final: prev:
 		{
-			autogit = pkgs.callPackage self.packages.${system}.default {};
+			autogit = self.packages.${system}.default;
 		};
 
 		nixosModules.default = import ./module.nix;
