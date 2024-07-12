@@ -17,7 +17,12 @@
 				name = "autogit";
 				inherit version;
 
-				buildInputs = [ pkgs.git ];
+				nativeBuildInputs = [ pkgs.makeWrapper ];
+
+				fixupPhase = ''
+					wrapProgram $out/bin/autogit \
+						--suffix PATH : ${pkgs.git}/bin
+				'';
 
 				src = ./.;
 			};
