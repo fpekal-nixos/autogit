@@ -17,6 +17,8 @@
 				name = "autogit";
 				inherit version;
 
+				buildInputs = [ pkgs.git ];
+
 				src = ./.;
 			};
 		};
