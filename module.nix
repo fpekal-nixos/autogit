@@ -41,7 +41,6 @@
 	let
 		cfg = config.services.autogit;
 
-		#package = pkgs.callPackage ./autogit.nix {};
 		package = pkgs.autogit;
 
 		prepareConfig = list:
@@ -51,11 +50,7 @@
 		in
 			(toString h.minutes) + " " + (if h.push then "true" else "false") + " " + (toString h.path) + "\n" + (if ((lib.length t) > 0) then (prepareConfig t) else "");
 	in
-	{
-		environment.systemPackages = lib.mkIf cfg.enable [
-			package
-		];
-
+	lib.mkIf cfg.enable {
 		environment.etc = {
 			"autogit/autogit.conf" = {
 				enable = cfg.enable;
@@ -63,7 +58,7 @@
 			};
 		};
 
-		systemd.services = lib.mkIf cfg.enable {
+		systemd.services = {
 			autogit = {
 				enable = true;
 				script = "${package}/bin/autogit";
